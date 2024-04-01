@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Multi-Form Page</title>
+</head>
+<body>
+    <h1>Management Portal</h1>
+
+    <!-- Removed the Add Book section as per the modification -->
+
+    <h2>Add Employee</h2>
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ employee_form.as_p }}
+        <button type="submit" name="employee_submit">Add Employee</button>
+    </form>
+
+    <!-- Unified Task Form Section: Adding a task, assigning it, and updating progress -->
+    <h2>Task Action</h2>
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ task_form.as_p }}
+        <!-- Removed separate buttons for assigning a task and updating progress. 
+             Assuming task_form now includes necessary fields for these actions. -->
+        <button type="submit" name="task_action_submit">Add/Assign/Update Task</button>
+    </form>
+
+    <!-- Task Report -->
+    <h2>Task Report</h2>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Assigned To</th>
+            <th>Progress</th>
+        </tr>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.title }}</td>
+            <td>{{ task.assigned_to.name|default:"Unassigned" }}</td>
+            <td>{{ task.progress }}%</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
