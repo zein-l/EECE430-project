@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Employee</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 40px;
+            color: #333;
+        }
+        h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #fff;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        form {
+            display: inline;
+        }
+        button {
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            border-radius: 5px;
+            transition-duration: 0.4s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        a.button-link {
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            background-color: #007BFF;
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        a.button-link:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h2>Delete Employee</h2>
+    <ul>
+        {% for employee in employees %}
+        <li>
+            {{ employee.Firstname }} {{ employee.Middlename }} {{ employee.Familyname }} 
+            <form method="post" action="{% url 'perform_delete_employee' %}">
+                {% csrf_token %}
+                <input type="hidden" name="employee_id" value="{{ employee.id }}">
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+        {% empty %}
+        <li>No employees to display.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'home' %}" class="button-link">Back to Management Portal</a>
+</body>
+</html>

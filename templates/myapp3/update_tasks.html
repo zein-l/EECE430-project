@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Tasks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .task-container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .task-item {
+            border-bottom: 1px solid #eee;
+            padding: 10px 5px;
+        }
+        .task-item:last-child {
+            border-bottom: none;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 5px;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .back-button {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Update Tasks</h1>
+    <div class="task-container">
+        {% for task in tasks %}
+        <div class="task-item">
+            <p>{{ task.title }}</p>
+            <!-- Link to a page or modal for updating the task -->
+            <a href="{% url 'update_task' task.id %}" class="button">Update</a>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'home' %}" class="button back-button">Go Back</a>
+</body>
+</html>

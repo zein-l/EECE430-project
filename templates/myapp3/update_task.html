@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Task</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0 auto;
+            padding: 0 20px;
+            max-width: 800px; /* Set a max-width for the form and center it */
+        }
+        .form-group {
+            margin-bottom: 15px; /* Add space between form groups */
+        }
+        label {
+            display: block;
+            margin-bottom: 5px; /* Add some space between the label and input */
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px; /* Add space below inputs */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button,
+        .button-link {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block; /* Align buttons side-by-side */
+            margin-right: 10px; /* Add space between buttons */
+        }
+        button:hover,
+        .button-link:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Update Task</h1>
+    <form id="update-task-form" method="post" onsubmit="updateTask(event);">
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" id="title" value="{{ task.title }}">
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description">{{ task.description }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="start-date">Start Date:</label>
+            <input type="date" id="start-date" value="{{ task.start_date|date:'Y-m-d' }}">
+        </div>
+        <div class="form-group">
+            <label for="end-date">End Date:</label>
+            <input type="date" id="end-date" value="{{ task.end_date|date:'Y-m-d' }}">
+        </div>
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select id="status">
+                <option value="not_started" {% if task.status == 'not_started' %}selected{% endif %}>Not Started</option>
+                <option value="in_progress" {% if task.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                <option value="done" {% if task.status == 'done' %}selected{% endif %}>Done</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Assigned Employees and their Progress:</label>
+            {% for employee in all_employees %}
+                <div>
+                    <label>
+                        {{ employee.Firstname }}:
+                        <input type="checkbox" name="assigned_employees" value="{{ employee.id }}"
+                        {% if employee in task.assigned_to.all %} checked {% endif %}>
+                    </label>
+                    {% for assignment in employee.assignments.all %}
+                        {% if assignment.task.id == task.id %}
+                        <input type="number" id="progress-{{ employee.id }}" name="progress-{{ employee.id }}"
+                        value="{{ assignment.progress_percentage }}" min="0" max="100">
+                        {% endif %}
+                    {% empty %}
+                        <input type="number" id="progress-{{ employee.id }}" name="progress-{{ employee.id }}"
+                        value="0" min="0" max="100" placeholder="Progress %">
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        <button type="submit">Update Task</button>
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+        <a href="{% url 'update_tasks' %}" class="button-link">Go Back</a> <!-- Adjust the URL as needed -->
+    </form>
+    <script>
+        function updateTask() {
+            event.preventDefault();
+            const taskId = document.getElementById('task-id').value;
+            const checkboxes = document.querySelectorAll('input[name="assigned_employees"]:checked');
+            const data = {
+                title: document.getElementById('title').value,
+                description: document.getElementById('description').value,
+                start_date: document.getElementById('start-date').value,
+                end_date: document.getElementById('end-date').value,
+                status: document.getElementById('status').value,
+                assigned_to: Array.from(checkboxes).map(checkbox => checkbox.value),
+                progress: {}
+            };
+
+            checkboxes.forEach(checkbox => {
+                const progressInput = document.getElementById('progress-' + checkbox.value);
+                data.progress[checkbox.value] = progressInput ? progressInput.value : 0;
+            });
+
+            fetch(`/update-task/${taskId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response =>response.json())
+            .then(data => {
+             if (data.status === 'success') {
+                alert('Task updated successfully');
+                window.location.href = '/path-to-redirect-after-success';
+            } 
+            else {
+                alert('Error: ' + data.message);
+            }
+    })
+    .catch(error => { alert('Error updating task: ' + error);
+
+    });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }   
+        }
+    </script>
+</body>
+</html> 

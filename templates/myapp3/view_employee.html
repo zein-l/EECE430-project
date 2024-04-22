@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Employee</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        p {
+            font-size: 1em;
+            line-height: 1.6;
+            color: #333;
+        }
+        img {
+            max-width: 100px; /* Adjust as needed */
+            max-height: 100px; /* Adjust as needed */
+            border-radius: 50%;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Employee Information</h1>
+        <p><strong>Name:</strong> {{ employee.Firstname }} {{ employee.Middlename }} {{ employee.Familyname }}</p>
+        <p><strong>Employee ID:</strong> {{ employee.Employeeid }}</p>
+        <p><strong>Email:</strong> {{ employee.emailaddress }}</p>
+        <p><strong>Contact Number:</strong> {{ employee.formatted_contact_number }}</p>
+        <p><strong>Position:</strong> {{ employee.Position }}</p>
+        <p><strong>Department:</strong> {{ employee.Department }}</p>
+        <p><strong>Residential Address:</strong> {{ employee.Residential }}</p>
+        <p><strong>Degree:</strong> {{ employee.Degree }}</p>
+        <p><strong>Specialization:</strong> {{ employee.Specialization }}</p>
+        <p><strong>Institution:</strong> {{ employee.Institution }}</p>
+        <p><strong>Previous Work:</strong> {{ employee.Previous_work }}</p>
+        <p><strong>Contract Start Date:</strong> {{ employee.Contract_start_date }}</p>
+        <p><strong>Contract End Date:</strong> {{ employee.Contract_end_date }}</p>
+        <p><strong>Salary:</strong> {{ employee.Salary }}</p>
+        
+    </div>
+</body>
+</html>

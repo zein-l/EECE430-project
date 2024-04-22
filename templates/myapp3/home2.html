@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Employee Management System</title>
+    <title>Employee Dashboard</title>
     <style>
+       
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #e8eff1;
@@ -76,57 +77,21 @@
     </style>
 </head>
 <body>
-
-    <div class="header">
-        <h1>Employee Management System</h1>
-    </div>
-
     <div class="container">
+        <!-- Include other elements from your home.html as necessary -->
         <div class="card">
-            <h2>Add Employee</h2>
-            <a href="{% url 'Manager1' %}" class="button">Go to Add Employee Form</a>
-        </div>
-
-        <div class="card">
-            <h2>Delete Employee</h2>
-            <a href="{% url 'delete_employee' %}" class="button">Go to Delete Employee Form</a>
-        </div>
-
-        <div class="card">
-            <h2>Update Employee</h2>
-            <a href="{% url 'list_employee' %}" class="button">Go to Update Employee Form</a>
-        </div>
-
-        <div class="card">
-            <h2>Create Task</h2>
-            <a href="{% url 'manage_tasks' %}" class="button">Go to Task Creation Form</Form></a>
-        </div>
-
-        <div class="card">
-            <h2>Assign task</h2>
-            <a href="{% url 'assign_tasks' %}" class="button">Go to Task Assignment Form</Form></a>
-        </div>
-
-        <div class="card">
-            <h2>Delete Task</h2>
-            <a href="{% url 'delete_task' %}" class="button">Go to Task Deletion Form</a>
-        </div>
-
-        <div class="card">
-            <h2>Update Task</h2>
-            <a href="{% url 'update_tasks' %}" class="button">Go to Task Update Form</a>
-        </div>
-
-        <div class="card">
-            <h2>Calendar</h2>
-            <a href="{% url 'calendar' %}" class="button">Go to Calendar</a>
+            <h2>View Your Information</h2>
+            <a href="{% url 'view_employee' employee.id %}" class="button">View Employee</a>
         </div>
         <div class="card">
-            <h2>Announcement</h2>
-            <a href="{% url 'select_announcement' %}" class="button">Send Announcements</a>
-
+            <h2>View Assigned Task</h2>
+            <button class="button" onclick="buttonClicked()">View Tasks</button>
         </div>
+        <div class="card">
+            <h2>View Announcement</h2>
+            <button class="button" onclick="buttonClicked()">View Calendar</button>
+        </div>
+    
     </div>
-
 </body>
 </html>

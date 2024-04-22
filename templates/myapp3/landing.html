@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Landing Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e8eff1;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+        .container {
+            text-align: center;
+        }
+        .button {
+            background-color: #008cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        h1 {
+            margin-bottom: 30px;
+        }
+        .manager-info {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="manager-info">
+        Manager Login: zak18@mail.aub.edu <br>
+        Default Password: 202214409
+    </div>
+
+    <div class="container">
+        <h1>Welcome to the Employee Management System</h1>
+        <button onclick="managerLogin()" class="button">Manager</button>
+        <button onclick="employeeLogin()" class="button">Employee</button>
+    </div>
+
+    <script>
+        function managerLogin() {
+            var email = prompt("Please enter your manager email address:");
+            var password = prompt("Please enter your password:");
+            if(email === "zak18@mail.aub.edu" && password === "202214409") {
+                window.location.href = "{% url 'home' %}"; // Replace with the path to your manager's home view
+            } else {
+                alert("Incorrect email or password!");
+            }
+        }
+
+        function employeeLogin() {
+            var email = prompt("Please enter your email address:");
+            var employeeId = prompt("Please enter your Employee ID:");
+            if(email && employeeId) {
+                window.location.href = `/home2?email=${encodeURIComponent(email)}&employeeId=${encodeURIComponent(employeeId)}`;
+            } else {
+                alert("You must enter both email and Employee ID!");
+            }
+        }
+    </script>
+</body>
+</html>

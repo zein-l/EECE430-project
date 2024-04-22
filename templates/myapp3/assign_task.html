@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assign Task</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        form {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        input, select, span {
+            margin-top: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h2>Assign Task: {{ task.title }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        {% for form in formset %}
+        <div>
+            {{ form.employee.label_tag }}: {{ form.employee }}
+            {{ form.progress }}
+            <input type="range" min="0" max="100" data-progress-input="{{ form.progress.id_for_label }}" oninput="updateProgressValue(this)">
+            Current Progress: <span id="display-{{ form.progress.id_for_label }}">0%</span>
+        </div>
+        {% endfor %}
+        <button type="submit">Save Assignments</button>
+    </form>
+    <script>
+        function updateProgressValue(slider) {
+            const progressInput = document.getElementById(slider.dataset.progressInput);
+            const displaySpan = document.getElementById('display-' + slider.dataset.progressInput);
+            progressInput.value = slider.value;
+            displaySpan.textContent = slider.value + '%';
+        }
+    </script>
+</body>
+</html>

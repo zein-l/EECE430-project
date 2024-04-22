@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        input, textarea {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="goBack()">Go Back</button>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+        </script>
+    <h1>Task List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Assigned To</th>
+                <th>Status</th>
+                <th>Actions</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>
+                    <input type="text" id="title-{{ task.id }}" value="{{ task.title }}" readonly>
+                </td>
+                <td>
+                    <textarea id="description-{{ task.id }}" readonly>{{ task.description }}</textarea>
+                </td>
+                <td>
+                    <input type="date" class="date-input" id="start-date-{{ task.id }}" value="{{ task.start_date|date:'Y-m-d' }}" readonly>
+                </td>
+                </td>
+                
+                <td>
+                    <input type="date" class="date-input" id="end-date-{{ task.id }}" value="{{ task.end_date|date:'Y-m-d' }}" readonly>
+                </td>
+
+                <td>
+                    <div id="assigned-display-{{ task.id }}">
+                        {% for employee in task.assigned_to.all %}
+                            <span>{{ employee.name }}</span>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div id="assigned-edit-{{ task.id }}" style="display: none;">
+                        {% for employee in employees %} <!-- Ensure you pass 'employees' from your view -->
+                            <label>
+                                <input type="checkbox" class="assigned-chk" value="{{ employee.id }}"
+                                {% if employee in task.assigned_to.all %} checked {% endif %}>
+                                {{ employee.name }}
+                            </label><br>
+                        {% endfor %}
+                    </div>
+                </td>
+                <td>
+                    <span id="status-display-{{ task.id }}">{{ task.get_status_display }}</span>
+                    <select id="status-edit-{{ task.id }}" style="display: none;">
+                        {% for status_value, status_name in task.STATUS_CHOICES %}
+                        <option value="{{ status_value }}" {% if task.status == status_value %}selected{% endif %}>
+                            {{ status_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </td>
+                
+                <td>
+                    <button type="button" class="edit-btn" data-task-id="{{ task.id }}">Edit</button>
+                    <button type="button" class="delete-btn" data-task-id="{{ task.id }}">Delete</button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No tasks available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const editButtons = document.querySelectorAll('.edit-btn');
+    editButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const taskId = this.dataset.taskId;
+            const titleInput = document.querySelector(`#title-${taskId}`);
+            const descriptionTextarea = document.querySelector(`#description-${taskId}`);
+            const startDateInput = document.querySelector(`#start-date-${taskId}`);
+            const endDateInput = document.querySelector(`#end-date-${taskId}`);
+            const assignedDisplay = document.getElementById(`assigned-display-${taskId}`);
+            const assignedEdit = document.getElementById(`assigned-edit-${taskId}`);
+            const statusDisplay = document.getElementById(`status-display-${taskId}`);
+            const statusEdit = document.getElementById(`status-edit-${taskId}`);
+
+            if (this.textContent === 'Edit') {
+                // Toggle fields to edit mode
+                titleInput.removeAttribute('readonly');
+                descriptionTextarea.removeAttribute('readonly');
+                startDateInput.removeAttribute('readonly');
+                endDateInput.removeAttribute('readonly');
+                assignedDisplay.style.display = 'none';
+                assignedEdit.style.display = 'block';
+                statusDisplay.style.display = 'none';
+                statusEdit.style.display = 'inline';
+                this.textContent = 'Save Changes';
+            } else {
+                // Collect assigned_to employee ids
+                const assignedIds = Array.from(assignedEdit.querySelectorAll('.assigned-chk:checked')).map(chk => chk.value);
+                const updatedStatus = statusEdit.value;
+                
+                // Prepare data to save
+                const updatedData = {
+                    title: titleInput.value,
+                    description: descriptionTextarea.value,
+                    start_date: startDateInput.value,
+                    end_date: endDateInput.value,
+                    assigned_to: assignedIds
+                   
+                };
+
+                // Send update request
+                fetch(`/update-task/${taskId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify(updatedData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(() => {
+                    // Update UI after saving
+                    titleInput.setAttribute('readonly', true);
+                    descriptionTextarea.setAttribute('readonly', true);
+                    startDateInput.setAttribute('readonly', true);
+                    endDateInput.setAttribute('readonly', true);
+                    assignedDisplay.style.display = 'block';
+                    assignedEdit.style.display = 'none';
+                    this.textContent = 'Edit';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+    });
+}); 
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle deletion
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const taskId = this.dataset.taskId;
+            if (confirm('Are you sure you want to delete this task?')) {
+                fetch(`/delete-task/${taskId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(() => {
+                    const row = button.closest('tr');
+                    row.remove();  // Remove the row from the table on success
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+    });
+});
+
+
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            </script>
+    </table>
+
+    
+
+</body>
+</html>
