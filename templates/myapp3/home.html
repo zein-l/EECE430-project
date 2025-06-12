@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Management System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e8eff1;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #005792;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .button {
+            background-color: #008cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+        }
+        .button:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .content-section {
+            margin-bottom: 20px; /* Add spacing between sections */
+        }
+        .content-section h2 {
+            margin-bottom: 10px; /* Spacing above the button */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Employee Management System</h1>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>Add Employee</h2>
+            <a href="{% url 'Manager1' %}" class="button">Go to Add Employee Form</a>
+        </div>
+
+        <div class="card">
+            <h2>Delete Employee</h2>
+            <a href="{% url 'delete_employee' %}" class="button">Go to Delete Employee Form</a>
+        </div>
+
+        <div class="card">
+            <h2>Update Employee</h2>
+            <a href="{% url 'list_employee' %}" class="button">Go to Update Employee Form</a>
+        </div>
+
+        <div class="card">
+            <h2>Create Task</h2>
+            <a href="{% url 'manage_tasks' %}" class="button">Go to Task Creation Form</Form></a>
+        </div>
+
+        <div class="card">
+            <h2>Assign task</h2>
+            <a href="{% url 'assign_tasks' %}" class="button">Go to Task Assignment Form</Form></a>
+        </div>
+
+        <div class="card">
+            <h2>Delete Task</h2>
+            <a href="{% url 'delete_task' %}" class="button">Go to Task Deletion Form</a>
+        </div>
+
+        <div class="card">
+            <h2>Update Task</h2>
+            <a href="{% url 'update_tasks' %}" class="button">Go to Task Update Form</a>
+        </div>
+
+        <div class="card">
+            <h2>Calendar</h2>
+            <a href="{% url 'calendar' %}" class="button">Go to Calendar</a>
+        </div>
+        <div class="card">
+            <h2>Announcement</h2>
+            <a href="{% url 'select_announcement' %}" class="button">Send Announcements</a>
+
+        </div>
+    </div>
+
+</body>
+</html>

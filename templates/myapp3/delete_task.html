@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Tasks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 40px;
+        }
+        .task-container {
+            background-color: #fff;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+        }
+        button, .button-link{
+            padding: 10px 20px;
+            background-color: #007BFF; /* Consistent with your existing button design */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+        button:hover {
+            background-color: #C9302C; /* Darker red for hover */
+        }
+        a.button-link {
+            font-size: 16px; /* Optional: Adjust font size for links styled as buttons */
+        }
+    </style>
+</head>
+<body>
+    <h1>Delete Tasks</h1>
+    {% if messages %}
+        {% for message in messages %}
+            <div>{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    {% for task in tasks %}
+    <div class="task-container">
+        <h3>{{ task.title }}</h3>
+        <form action="{% url 'delete_task' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="task_id" value="{{ task.id }}">
+            <button type="submit">Delete</button>
+        </form>
+    </div>
+    {% endfor %}
+    <a href="{% url 'home' %}" class="button-link">Back to Home</a>
+</body>
+</html>

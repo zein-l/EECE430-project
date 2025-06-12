@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Announcements</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        div { margin-top: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px; }
+        h1 { color: #333; }
+    </style>
+</head>
+<body>
+    <h1>Announcements</h1>
+    {% for announcement in announcements %}
+    <div>
+        <h2>{{ announcement.title }}</h2>
+        <p>{{ announcement.content }}</p>
+        <p><small>Posted on {{ announcement.date_posted|date:"Y-m-d H:i" }}</small></p>
+    </div>
+    {% endfor %}
+</body>
+</html>

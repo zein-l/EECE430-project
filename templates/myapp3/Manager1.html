@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Employee</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e8eff1;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #005792;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h2 {
+            text-align: center;
+            color: #005792;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        input, select, textarea {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .button {
+            background-color: #008cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+        }
+        .button:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+        .go-back {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .alert {
+            color: red;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid red;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Employee Management System</h1>
+    </div>
+
+    <div class="container">
+        <h2>Add Employee</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ manager1_form.non_field_errors }}
+            {{ manager1_form.as_p }}
+            <button type="submit" name="manager1_submit" class="button">Submit</button>
+        </form>
+        {% for field in manager1_form %}
+            {% if field.errors %}
+                <div class="alert">
+                    {{ field.errors }}
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="go-back">
+            <button onclick="goBack()" class="button">Go Back</button>
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

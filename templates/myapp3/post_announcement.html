@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Post Announcement</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        form { margin-top: 20px; }
+        button { background-color: #007BFF; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>Post an Announcement</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Post</button>
+    </form>
+</body>
+</html>

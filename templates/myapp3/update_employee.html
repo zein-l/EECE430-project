@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Employee</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 40px;
+        }
+        form {
+            background: white;
+            padding: 16px;
+            border: solid 1px #ccc;
+        }
+        label, input, textarea, select {
+            display: block;
+            width: 95%;
+            margin-top: 8px;
+            padding: 8px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .back-link {
+            display: block;
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            margin-top: 20px;
+            border-radius: 5px;
+            text-decoration: none;
+        
+        }
+    </style>
+</head>
+<body>
+    <h2>Update Employee</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update Employee</button>
+    </form>
+    <a href="{% url 'list_employee' %}" class="back-link">Back to Employee List</a>
+</body>
+</html>

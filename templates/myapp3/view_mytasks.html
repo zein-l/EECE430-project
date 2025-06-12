@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Tasks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            width: 800px;
+            background-color: #fff;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .task {
+            border-bottom: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .task:last-child {
+            border-bottom: none;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-top: 10px;
+        }
+        label {
+            margin-right: 10px;
+        }
+        input[type="number"] {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 8px;
+            width: 80px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tasks Assigned to Me</h1>
+        {% for task in tasks %}
+        <div class="task">
+            <p>Task: {{ task.title }}</p>
+            <p>Description: {{ task.description }}</p>
+            <form method="post" action="{% url 'update_task_progress' task.id %}">
+                {% csrf_token %}
+                <label for="progress-{{ task.id }}">Progress:</label>
+                <input type="number" name="progress" id="progress-{{ task.id }}" value="{{ task.progress }}" min="0" max="100">
+                <button type="submit">Update Progress</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
